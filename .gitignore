@@ -1,0 +1,13 @@
+private/ 
+private/ 
+*.tmp 
+bin/ 
+obj/ 
+debug/
+packages/
+lib/
+node_modules/
+*.dll 
+*.exe 
+.vs/
+*.pdb 
