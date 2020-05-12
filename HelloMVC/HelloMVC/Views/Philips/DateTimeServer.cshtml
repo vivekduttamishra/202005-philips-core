@@ -1,0 +1,12 @@
+﻿
+
+
+<h2>@ViewData["title"]</h2>
+@{ 
+    var date =(DateTime) ViewData["date"];
+}
+<p><strong>Date is </strong>@date.ToLongDateString()</p>
+<p><strong>Time is </strong>@date.ToLongTimeString()</p>
+<footer>
+    <a href="mailto:@ViewBag.SupportEmail">@ViewBag.SupportEmailLabel</a>
+</footer>
