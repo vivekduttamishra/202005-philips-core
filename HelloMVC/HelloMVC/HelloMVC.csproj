@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Code\Person.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MathsController.cs" />
     <Compile Include="Controllers\PhilipsController.cs" />
@@ -168,7 +169,13 @@
     <Content Include="Views\Philips\Home.cshtml" />
     <Content Include="Views\Philips\DateTimeView.cshtml" />
     <Content Include="Views\Philips\DateTimeServer.cshtml" />
-    <Content Include="Views\Philips\ErrorView.cshtml" />
+    <Content Include="Views\Shared\ErrorView.cshtml" />
+    <Content Include="Views\Philips\AdminContact.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\UserManagement.cshtml" />
+    <Content Include="Views\Admin\ContentManagement.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Admin\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -23,9 +23,14 @@ namespace HelloMVC.Controllers
             return x * y;
         }
 
-        public int Divide(int x, int y)
+        public ActionResult Divide(int x, int y)
         {
-            return x / y;
+            if (y == 0)
+            {
+                Response.StatusCode = 400;
+                return View("ErrorView", (object)"Can't divide by Zero");
+            }
+            return Content(string.Format("{0}", x / y)); //good result
         }
 
         public int Factorial(int x)

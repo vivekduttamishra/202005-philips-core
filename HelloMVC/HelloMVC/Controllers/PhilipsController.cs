@@ -51,7 +51,7 @@ namespace HelloMVC.Controllers
             return person;
         }
 
-        public ContentResult AdminContact()
+        public ActionResult AdminContact()
         {
             var person = new Person()
             {
@@ -59,16 +59,25 @@ namespace HelloMVC.Controllers
                 Email = "admin@philips.com"
             };
             //return person;
-            return new ContentResult()
-            {
-                Content = person.ToString(),
-                ContentType="text/plain"   //data is a plain text (Not HTML)
-            };
+            //return new ContentResult()
+            //{
+            //    Content = person.ToString(),
+            //    ContentType="text/plain"   //data is a plain text (Not HTML)
+            //};
+
+            return View(person); //viewname=AdminContact  model=person
 
         }
     
-        public ContentResult Welcome()
+        public ContentResult Welcome(string id,string type)
         {
+            if (type == null)
+                type = "text";
+            if (id == null)
+                id = "html";
+
+            var mime = type + "/" + id;  //mime type
+
             //1. Get Model Data
             var title = "Welcome to Philips Server";
             var date = DateTime.Now;
@@ -86,7 +95,7 @@ namespace HelloMVC.Controllers
                 Content = html.ToString()
             };*/
             //3. Return the View
-            return Content(html.ToString()); //Content is a helper function in Controller base class
+            return Content(html.ToString(), mime); //Content is a helper function in Controller base class
 
         }
 
