@@ -69,9 +69,11 @@ namespace HelloMVC.Controllers
     
         public ContentResult Welcome()
         {
+            //1. Get Model Data
             var title = "Welcome to Philips Server";
             var date = DateTime.Now;
 
+            //2. Generate the View
             var html = new StringBuilder();
             html.AppendFormat("<html><head><title>{0}</title></head>", title);
             html.AppendFormat("<body><h1>{0}</h1>", title);
@@ -83,7 +85,7 @@ namespace HelloMVC.Controllers
             {
                 Content = html.ToString()
             };*/
-
+            //3. Return the View
             return Content(html.ToString()); //Content is a helper function in Controller base class
 
         }
@@ -92,7 +94,7 @@ namespace HelloMVC.Controllers
         {
             return View();//conventionally View name is same as action name if not specified
         }
-        public ViewResult DateTimeServer()
+        public ViewResult Index()
         {
             //A view should have one model not many
             //ViewData and ViewBag can have multiple data and that makes them unsuitable for 
@@ -106,9 +108,11 @@ namespace HelloMVC.Controllers
       
         public ViewResult Today()
         {
+            //step 1 - controller gets Model Data
             var date = DateTime.Now; //model
 
-            //controller passes ModelData and ViewTemplate to "View" Engine.
+            //step 2. controller passes Model Data and ViewTemplate 
+            //to "View" Engine.
 
             return View("DateTimeView",  //View Template
                         date             //Model Data
@@ -120,6 +124,54 @@ namespace HelloMVC.Controllers
             var date = DateTime.Now.AddDays(1);
             return View("DateTimeView", date);
         }
-    
+
+        public ViewResult AfterDays(int days)
+        {
+            var date = DateTime.Now.AddDays(days);
+            return View("DateTimeView", date);
+        }
+
+        public string Age(DateTime birthDate)
+        {
+            var age = DateTime.Now - birthDate;
+
+            return string.Format("Your age  is {0} Years", (int)(age.Days / 365));
+        }
+
+
+        //parameter becomes null if no value is passed or non-int value is passed.
+        //but ordinary 'int' is not-nullable.
+        //let us us nullable int.
+        public ActionResult DaysAfter(int? id)
+        {
+            if(id!=null) //Happy Path!
+            {
+                var date = DateTime.Now.AddDays((int)id); 
+                return View("DateTimeView", date);
+            }
+
+            //What if no value or invalid valud is supplied for days?
+
+            //Approach 1 -Send plain error message to user
+            //return Content("Invalid/Missing Parameter. Correct usage ?days=12");
+
+            //Approach 2 -Send a formatted html error message to user
+            //Response.StatusCode = 400; //send the right status code
+            //return View(
+            //    "ErrorView",   //ViewName
+            //    (object) "Invalid/Missing Parameter 'days' try using ?days=7" //Model
+            //    );
+
+            //Approach 3 - we may display default/todays date
+            //return Today();  //Internal transfer to a different content generation
+
+
+            //Appraoch 4 -- send user to Today url using redirect
+
+            return RedirectToAction("Today"); //Send user to Today action
+
+            
+        }
+
     }
 }
