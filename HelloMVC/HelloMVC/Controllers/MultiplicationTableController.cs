@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelloMVC.Code;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,6 +77,22 @@ namespace HelloMVC.Controllers
             ViewBag.Max = max;
             return View(number); //generated table as the model
 
+
+        }
+
+        public ViewResult Table4(int id, int? highestMultiple)
+        {
+            var table = new MultiplicationTable()
+            {
+                Number = id,
+                Max = 10
+            };
+
+           
+            if (highestMultiple != null)
+                table.Max = highestMultiple.Value;
+
+            return View(table); //generated table as the model
 
         }
 

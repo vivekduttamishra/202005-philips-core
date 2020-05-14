@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Code\MultiplicationTable.cs" />
     <Compile Include="Code\Person.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -179,6 +180,7 @@
     <Content Include="Views\Admin\_ViewStart.cshtml" />
     <Content Include="Views\MultiplicationTable\Table2.cshtml" />
     <Content Include="Views\MultiplicationTable\Table3.cshtml" />
+    <Content Include="Views\MultiplicationTable\Table4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
