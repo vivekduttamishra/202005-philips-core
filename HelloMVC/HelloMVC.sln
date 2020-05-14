@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloMVC", "HelloMVC\HelloMVC.csproj", "{55C9AB21-2707-4BC8-B8D2-60B73FEF7ED7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConceptArchitect.Calculations", "ConceptArchitect.Calculations\ConceptArchitect.Calculations.csproj", "{2C4514E9-B4E8-492D-A215-AC2B65EFBA78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultipliationTableConsoleApp", "MultipliationTableConsoleApp\MultipliationTableConsoleApp.csproj", "{13836B26-B399-483E-9E96-E230FEB79DFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{55C9AB21-2707-4BC8-B8D2-60B73FEF7ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55C9AB21-2707-4BC8-B8D2-60B73FEF7ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55C9AB21-2707-4BC8-B8D2-60B73FEF7ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C4514E9-B4E8-492D-A215-AC2B65EFBA78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C4514E9-B4E8-492D-A215-AC2B65EFBA78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C4514E9-B4E8-492D-A215-AC2B65EFBA78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C4514E9-B4E8-492D-A215-AC2B65EFBA78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13836B26-B399-483E-9E96-E230FEB79DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13836B26-B399-483E-9E96-E230FEB79DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13836B26-B399-483E-9E96-E230FEB79DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13836B26-B399-483E-9E96-E230FEB79DFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

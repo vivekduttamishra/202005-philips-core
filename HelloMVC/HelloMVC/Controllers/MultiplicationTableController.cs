@@ -1,4 +1,5 @@
-﻿using HelloMVC.Code;
+﻿using ConceptArchitect.Calculations;
+using HelloMVC.Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +98,47 @@ namespace HelloMVC.Controllers
         }
 
 
+        public ViewResult Table5(int id, int? highestMultiple)
+        {
+            var table = new MultiplicationTable()
+            {
+                Number = id,
+                Max = 10
+            };
+
+            if (highestMultiple != null)
+                table.Max = highestMultiple.Value;
+
+            //PROBLEM: controller shouldn't have business logic.
+            for (int i = 1; i <= table.Max; i++)
+                table.Results.Add(new BinaryOperationInfo()
+                {
+                    Left=table.Number,
+                    Right=i,
+                    Result=table.Number*i
+                });
+
+            return View("table",table); //generated table as the model
+
+        }
+
+        public ViewResult Of(int? id, int? max)
+        {
+            if (id == null)
+            {
+                Response.StatusCode = 400;
+                return View("ErrorView", (object)"Please specify the number");
+            }
+
+            if (max == null)
+                max = 10;
+            
+            //Controller should call Business Service methods
+            //to get necessary Model Data
+            var table = MultiplicationTable.Generate((int)id, (int)max);
+
+            return View("table", table);
+        }
 
 
     }
