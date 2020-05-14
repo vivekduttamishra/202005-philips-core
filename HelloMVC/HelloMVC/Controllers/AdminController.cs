@@ -9,6 +9,17 @@ namespace HelloMVC.Controllers
 {
     public class AdminController: Controller
     {
+        int id;
+        public AdminController(int id)
+        {
+            this.id = id;
+        }
+
+        public AdminController()
+        {
+
+        }
+
         public ViewResult Index()
         {
             return View();

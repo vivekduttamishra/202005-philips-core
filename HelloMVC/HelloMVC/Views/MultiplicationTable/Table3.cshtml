@@ -1,0 +1,30 @@
+﻿@model int
+
+
+<h2>Table of @Model</h2>
+
+<table class="table table-condensed table-responsive table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Multiply</th>
+            
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+       @for (int i = 1; i <= ViewBag.Max; i++)
+       {
+            <tr>
+                <td>@Model*@i</td>
+                
+                <td>@(Model*i)</td>
+            </tr>   
+       }
+
+    </tbody>
+</table>
+
+<footer>
+    &copy; vivek@conceptarchitect.in | follow me twitter: @@vivekdmishra
+</footer>
+

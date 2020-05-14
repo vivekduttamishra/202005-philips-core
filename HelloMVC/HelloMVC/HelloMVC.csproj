@@ -124,6 +124,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MathsController.cs" />
+    <Compile Include="Controllers\MultiplicationTableController.cs" />
     <Compile Include="Controllers\PhilipsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -176,6 +177,8 @@
     <Content Include="Views\Admin\ContentManagement.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\_ViewStart.cshtml" />
+    <Content Include="Views\MultiplicationTable\Table2.cshtml" />
+    <Content Include="Views\MultiplicationTable\Table3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

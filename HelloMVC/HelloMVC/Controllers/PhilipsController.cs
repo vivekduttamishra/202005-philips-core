@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace HelloMVC.Controllers
 {
@@ -23,9 +24,6 @@ namespace HelloMVC.Controllers
     /// </summary>
     public class PhilipsController : Controller
     {
-       
-
-
         public void Hello()
         {
             //Console.WriteLine("Hello World from Philips Controller");
@@ -127,7 +125,7 @@ namespace HelloMVC.Controllers
                         date             //Model Data
                         );
         }
-
+        
         public ViewResult Tomorrow()
         {
             var date = DateTime.Now.AddDays(1);
@@ -180,6 +178,18 @@ namespace HelloMVC.Controllers
             return RedirectToAction("Today"); //Send user to Today action
 
             
+        }
+
+        [ActionName("bar")]
+        public String Foo()
+        {
+            return string.Format("ActionName={0}\tMethodName=Foo()", RouteData.Values["action"]);
+        }
+
+        [NonAction]
+        public String IAmNotAnAction()
+        {
+            return "Hey, I am not an action!";
         }
 
     }
