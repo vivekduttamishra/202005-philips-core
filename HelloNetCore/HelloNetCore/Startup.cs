@@ -19,14 +19,66 @@ namespace HelloNetCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Creates a pipeline. No code executes right now
+        // But pipeline functionalites execute on the request.
+        // 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Adding a middleware in the pipeline.
 
-            app.Run(SayHelloWorld);
+            //Middleware to Pass control to the next middleware
+            app.Use(next =>
+            {
+                //This is the middleware
+                return async context =>
+                {
+                    if (context.Request.Path.StartsWithSegments("/time"))
+                    {
+                        var date = DateTime.Now;
+                        await context.Response.WriteAsync(date.ToLongTimeString());
+                    }
+                    else
+                    {
+                        await next(context);
+                    }
+                };
+            });
+
+            app.Use(next =>
+            {
+                //This is the middleware
+                return async context =>
+                {
+                    if (context.Request.Path.StartsWithSegments("/date"))
+                    {
+                        var date = DateTime.Now;
+                        await context.Response.WriteAsync(date.ToLongDateString());
+                    }
+                    else
+                    {
+                        await next(context);
+                    }
+                };
+            });
+
+            //Middleware that always returns back
+            //And *NOT* passes control to the next Middleware
+            //app.Run(SayHelloWorld); //will run when request comes
+
+            app.Run(context =>
+            {
+                return context.Response.WriteAsync("Hello World from " + context.Request.Path.ToString());
+            });
+
+            
         }
 
+        
+
+        //Signaure for RequestDelegate
         public Task SayHelloWorld(HttpContext context)
         {
+            //Returns an Async Respons
             return context.Response.WriteAsync("Hello World from .NET Core");
         }
     }
