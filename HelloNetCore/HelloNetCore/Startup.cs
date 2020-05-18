@@ -28,8 +28,33 @@ namespace HelloNetCore
             //Adding a middleware in the pipeline.
 
             //Middleware to Pass control to the next middleware
+            if(env.IsDevelopment())
+                app.UseDeveloperExceptionPage();
+
 
             app.Use(next =>
+            {
+                return async context =>
+                {
+                    try
+                    {
+                        await next(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Response.StatusCode = 500;
+                        if (env.IsEnvironment("HarryPotter"))
+                            await context.Response.WriteAsync("Your wand has misfired -- " + ex.Message);
+                        else
+                            await context.Response.WriteAsync("Muggles can't see the magic");
+                    }
+                };
+
+
+            });
+
+            
+            app.Use(next => 
             {
                 return async context =>
                 {
@@ -40,10 +65,18 @@ namespace HelloNetCore
                 };
             });
 
-            //HandleUrl(url, action); //I want to perform given action for a given url
 
+            //you have added functionality to serve the static pages like html and css
 
-            //MiddleWares.HandleUrl(app, "/time", async context =>
+            //app.UseDefaultFiles(new DefaultFilesOptions()
+            //{
+            //    DefaultFileNames = new List<string>() { "home.html", "index.html" }
+            //}); //configure auto search for default files like index.html or default.html
+            ////now the url contains /index.html
+            //app.UseStaticFiles();
+
+            app.UseFileServer(); //internally ahndles UseDefaultFiles() and UseStaticFiles()
+
 
             app.UseMappedUrl("/time", async context =>
             {
@@ -52,19 +85,22 @@ namespace HelloNetCore
                 await context.Response.WriteAsync(date.ToLongTimeString());
             });
 
+            app.UseWelcomePage("/welcome"); //It is a proof of concept. Will server the /Path
 
+            app.UseMappedUrl("/error", context =>
+            {
+                throw new Exception("Something went wrong!");
+            });
+
+
+
+            
             app.UseMappedUrl("/date", async context =>
             {
                 await Task.Delay(1500);
                 await context.Response.WriteAsync(DateTime.Now.ToLongDateString());
             });
 
-            
-            //handle all other request <--- fallback url
-            //Middleware that always returns back
-            //And *NOT* passes control to the next Middleware
-            //app.Run(SayHelloWorld); //will run when request comes
-            
             app.Run(context =>
             {
                 return context.Response.WriteAsync("Hello World from " + context.Request.Path.ToString());
