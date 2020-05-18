@@ -27,6 +27,19 @@ namespace HelloNetCore
             //Adding a middleware in the pipeline.
 
             //Middleware to Pass control to the next middleware
+
+            app.Use(next =>
+           {
+               return async context =>
+               {
+                   var start = DateTime.Now; //dosomething before passing to next
+                   await next(context);   //let nex do the job and return back
+                   var end = DateTime.Now; //do something when it returns
+                   Console.WriteLine("Time taken by {0} is {1}", context.Request.Path, (end - start).TotalMilliseconds);
+               };
+           });
+
+            //process url /time or pass to the next middleware
             app.Use(next =>
             {
                 //This is the middleware
@@ -34,6 +47,7 @@ namespace HelloNetCore
                 {
                     if (context.Request.Path.StartsWithSegments("/time"))
                     {
+                        await Task.Delay(2500);
                         var date = DateTime.Now;
                         await context.Response.WriteAsync(date.ToLongTimeString());
                     }
@@ -44,6 +58,7 @@ namespace HelloNetCore
                 };
             });
 
+            //process url /date or pass to the next middleware
             app.Use(next =>
             {
                 //This is the middleware
@@ -51,6 +66,7 @@ namespace HelloNetCore
                 {
                     if (context.Request.Path.StartsWithSegments("/date"))
                     {
+                        await Task.Delay(1500);
                         var date = DateTime.Now;
                         await context.Response.WriteAsync(date.ToLongDateString());
                     }
@@ -61,16 +77,19 @@ namespace HelloNetCore
                 };
             });
 
+
+            //handle all other request <--- fallback url
             //Middleware that always returns back
             //And *NOT* passes control to the next Middleware
             //app.Run(SayHelloWorld); //will run when request comes
-
+            
             app.Run(context =>
             {
                 return context.Response.WriteAsync("Hello World from " + context.Request.Path.ToString());
             });
 
-            
+
+            app.Run(SayHelloWorld);
         }
 
         
