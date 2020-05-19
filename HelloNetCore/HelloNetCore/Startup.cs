@@ -92,7 +92,7 @@ namespace HelloNetCore
                 throw new Exception("Something went wrong!");
             });
 
-
+            
 
             
             app.UseMappedUrl("/date", async context =>
