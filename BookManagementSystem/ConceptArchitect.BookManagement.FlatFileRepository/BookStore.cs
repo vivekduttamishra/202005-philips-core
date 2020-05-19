@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ConceptArchitect.BookManagement.FlatFileRepository
 {
+    [Serializable]
     public class BookStore
     {
         internal Dictionary<string, Book> books = new Dictionary<string, Book>();

@@ -167,6 +167,7 @@
     <Content Include="Views\Author\Details.cshtml" />
     <Content Include="Views\Author\List - Copy.cshtml" />
     <Content Include="Views\Author\Create.cshtml" />
+    <Content Include="Views\Author\Create - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -186,6 +187,10 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConceptArchitect.BookManagement.FlatFileRepository\ConceptArchitect.BookManagement.FlatFileRepository.csproj">
+      <Project>{3423e6c3-8090-4865-885c-85430f78b348}</Project>
+      <Name>ConceptArchitect.BookManagement.FlatFileRepository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConceptArchitect.BookManagement\ConceptArchitect.BookManagement.csproj">
       <Project>{d488635f-cc31-42b8-8972-b0075e4604f9}</Project>
       <Name>ConceptArchitect.BookManagement</Name>

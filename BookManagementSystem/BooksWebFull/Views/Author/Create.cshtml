@@ -4,26 +4,32 @@
 
 <h2>Add New Author Info</h2>
 
-<form action="/author/add" method="post">
 
-    <label for="name">Name</label><br />
-    <input type="text" name="name" value="@Model.Name" /><br/>
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Name)
+    @Html.EditorFor(model => model.Name)
 
-    <label for="email">Email</label><br />
-    <input type="text" name="email" value="@Model.Email" /><br />
 
-    <label for="bio">Bio</label><br />
-    <input type="text" name="bio" value="@Model.Biography" /><br />
+    @Html.LabelFor(model => model.Email)
+    @Html.EditorFor(model => model.Email)
 
-    <label for="birthdate">BirthDate</label><br />
-    <input type="text" name="dob" value="@Model.BirthDate" /><br />
 
-    <label for="deathdate">Death Date (Leave Blank for happy case)</label><br />
-    <input type="text" name="deathdate" value="@Model.DeathDate" /><br />
+    @Html.LabelFor(model => model.Biography)
+    @Html.EditorFor(model => model.Biography)
 
-    <label for="photgraph">Photograph Url</label><br />
-    <input type="text" name="photograph" value="@Model.Photograph" /><br />
 
-    <input type="submit" value="Add" class="btn btn-primary" />
+    @Html.LabelFor(model => model.BirthDate)
+    @Html.EditorFor(model => model.BirthDate)
 
-</form>
+
+    @Html.LabelFor(model => model.DeathDate)
+    @Html.EditorFor(model => model.DeathDate)
+
+    @Html.LabelFor(model => model.Photograph)
+    @Html.EditorFor(model => model.Photograph)
+
+    <input type = "submit" value = "Add" class="btn btn-primary" />
+
+
+}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace ConceptArchitect.BookManagement
 {
+    [Serializable]
     public class Author
     {
         public string Id { get; set; }
@@ -35,7 +36,7 @@ namespace ConceptArchitect.BookManagement
         }
 
     }
-
+    [Serializable]
     public class Book
     {
         public string Id { get; set; }
@@ -48,6 +49,7 @@ namespace ConceptArchitect.BookManagement
         public string CoverPage { get; set; }
     }
 
+    [Serializable]
     public class User
     {
         public string Name;

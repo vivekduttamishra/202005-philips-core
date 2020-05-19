@@ -23,7 +23,7 @@ namespace ConceptArchitect.BookManagement
         {
             if (author == null)
                 return null;
-            if (ValidateId(author))
+            if (!ValidateId(author))
                 return null;
 
             //Now we need to save this in our storage
