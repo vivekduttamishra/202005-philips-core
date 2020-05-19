@@ -23,6 +23,17 @@ namespace ConceptArchitect.BookManagement
         public IList<Book> Books { get; set; } = new List<Book>();
 
 
+        public int Age
+        {
+            get
+            {
+                DateTime lastDate = DeathDate ?? DateTime.Now;
+                var age = lastDate - BirthDate;
+
+                return age.Days / 365; 
+            }
+        }
+
     }
 
     public class Book

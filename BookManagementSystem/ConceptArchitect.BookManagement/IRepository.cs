@@ -6,7 +6,7 @@ namespace ConceptArchitect.BookManagement
 {
     public interface IRepository<Entity,Id>
     {
-        Id Add(Entity);
+        Id Add(Entity entity);
         Entity GetById(Id id);
         IList<Entity> GetAll();
         IList<Entity> GetAll(Func<Entity, bool> matcher);

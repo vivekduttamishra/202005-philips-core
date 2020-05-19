@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConceptArchitect.BookManagement", "ConceptArchitect.BookManagement\ConceptArchitect.BookManagement.csproj", "{D488635F-CC31-42B8-8972-B0075E4604F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConceptArchitect.BookManagement.FlatFileRepository", "ConceptArchitect.BookManagement.FlatFileRepository\ConceptArchitect.BookManagement.FlatFileRepository.csproj", "{3423E6C3-8090-4865-885C-85430F78B348}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksWebFull", "BooksWebFull\BooksWebFull.csproj", "{E43B2C58-1E39-4E38-A1FC-D41B27F8DAC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D488635F-CC31-42B8-8972-B0075E4604F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D488635F-CC31-42B8-8972-B0075E4604F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D488635F-CC31-42B8-8972-B0075E4604F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3423E6C3-8090-4865-885C-85430F78B348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3423E6C3-8090-4865-885C-85430F78B348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3423E6C3-8090-4865-885C-85430F78B348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3423E6C3-8090-4865-885C-85430F78B348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E43B2C58-1E39-4E38-A1FC-D41B27F8DAC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E43B2C58-1E39-4E38-A1FC-D41B27F8DAC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E43B2C58-1E39-4E38-A1FC-D41B27F8DAC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E43B2C58-1E39-4E38-A1FC-D41B27F8DAC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
