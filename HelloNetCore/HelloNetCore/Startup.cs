@@ -56,6 +56,11 @@ namespace HelloNetCore
             //logger.LogInformation("Configure Service Method completed.");
             Console.WriteLine("Configure Service Finished");
 
+            //include MVC related interal objects such as -- ActionInvoker ModelBinder, ControllerFactory
+            services.AddMvc(opt =>
+            {
+                opt.EnableEndpointRouting = false;
+            });
             
         }
 
@@ -88,17 +93,28 @@ namespace HelloNetCore
              */
 
 
+
+
             logger.LogInformation("Middleware configuration Started");
             //Adding a middleware in the pipeline.
 
             //Middleware to Pass control to the next middleware
-            if(env.IsDevelopment())
+            //if(env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
 
             //service is auto injected to a method! here it is injected to Configure method above
-            
-            
+
+            //app.UseMvcWithDefaultRoute();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default",
+                    "{controller=home}/{action=index}/{id?}");
+            });
+
+
+            app.UseMultigreeter();
             
             app.UseMappedUrl("/welcome", async context =>
             {
