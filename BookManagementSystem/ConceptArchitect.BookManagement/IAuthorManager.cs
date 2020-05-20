@@ -4,7 +4,8 @@ using System.Text;
 
 namespace ConceptArchitect.BookManagement
 {
-    public interface IAuthorManager
+    
+    public interface IAuthorManager 
     {
         string AddAuthor(Author author); // add an author and return an author id
 

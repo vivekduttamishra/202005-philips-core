@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelloNetCore.Code;
 using HelloNetCore.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,14 +16,24 @@ namespace HelloNetCore
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+
+        //CONFIGURE YOUR INJECTABLE SERVICES HERE
+        //HERE YOU DEFINE ALL THE SERVICES (OBJECTS) THAT YOUR APPLICATION WILL NEED ANYWHERE
+        //IN MIDDLEWARES, IN CONSTRUCTORS, IN MODELS 
+        //AND CORE WILL AWAYS SUPPLY THOSE SERVICES TO WHOEVER NEEDS IT
         public void ConfigureServices(IServiceCollection services)
         {
+            //Now .NET core knows that IGreetService should be mappped to HelloGreetService
+            //services.AddSingleton<IGreetService, HelloGreetService>();
+
+            services.AddSingleton<IGreetService, TimedGreetService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         // Creates a pipeline. No code executes right now
         // But pipeline functionalites execute on the request.
-        // 
+
+        // CONFIGURE YOUR MIDDLEWARES HERE
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //Adding a middleware in the pipeline.
@@ -30,6 +41,70 @@ namespace HelloNetCore
             //Middleware to Pass control to the next middleware
             if(env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
+
+
+            app.UseMappedUrl("/wish", async context =>
+            {
+
+                //var service = new HelloGreetService();
+
+                //approach #2 --> Get It from appbuilder
+                var service = app.ApplicationServices.GetService<IGreetService>();
+
+                if (context.Request.Query.ContainsKey("name"))
+                {
+                    var name = context.Request.Query["name"];
+                    await context.Response.WriteAsync(service.Greet(name));
+                }
+                else
+                {
+                    context.Response.StatusCode = 400;
+                    await context.Response.WriteAsync("Please specify the name for greeting as ?name=Someone");
+                }
+            });
+
+
+            app.UseMappedUrl("/greet", async context =>
+            {
+
+                //var service = new HelloGreetService();
+
+                //approach #1 --> Get It from context
+                var service = context.RequestServices.GetService<IGreetService>();
+
+                if (context.Request.Query.ContainsKey("name"))
+                {
+                    var name = context.Request.Query["name"];
+                    await context.Response.WriteAsync(service.Greet(name));
+                }
+                else
+                {
+                    context.Response.StatusCode = 400;
+                    await context.Response.WriteAsync("Please specify the name for greeting as ?name=Someone");
+                }
+            });
+
+
+
+
+            app.UseMappedUrl("/hello", async context =>
+            {
+
+                var service = new HelloGreetService();
+
+                if (context.Request.Query.ContainsKey("name"))
+                {
+                    var name = context.Request.Query["name"];
+                    await context.Response.WriteAsync(service.Greet(name));
+                }
+                else
+                {
+                    context.Response.StatusCode = 400;
+                    await context.Response.WriteAsync("Please specify the name for greeting as ?name=Someone");
+                }
+            });
+
+
 
 
             app.Use(next =>
@@ -49,8 +124,6 @@ namespace HelloNetCore
                             await context.Response.WriteAsync("Muggles can't see the magic");
                     }
                 };
-
-
             });
 
             

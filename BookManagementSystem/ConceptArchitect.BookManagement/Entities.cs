@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace ConceptArchitect.BookManagement
 {
     [Serializable]
-    public class Author
+    public class Author 
     {
         public string Id { get; set; }
 
