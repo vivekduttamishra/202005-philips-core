@@ -9,11 +9,27 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace HelloNetCore
 {
     public class Startup
     {
+
+        ILogger<Object> logger;
+
+        /*
+         * We can inject dependency even in the constructor of Startup
+         * However here we can inject only preconfigured dependencies as ConfigureService metrhod is not invoked yet
+         * Remeber that mehtod can be invoked only after object is created and constrcutor is called.
+         */ 
+
+        //public Startup(ILogger<Object> logger)
+        //{
+        //    this.logger = logger;
+        //}
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 
@@ -24,9 +40,23 @@ namespace HelloNetCore
         public void ConfigureServices(IServiceCollection services)
         {
             //Now .NET core knows that IGreetService should be mappped to HelloGreetService
-            //services.AddSingleton<IGreetService, HelloGreetService>();
 
+            services.AddScoped<IFormatterService, CapitalizerGreetingService>(); //<--- scoped to current request
+
+
+            services.AddSingleton<IGreetService, HelloGreetService>();
             services.AddSingleton<IGreetService, TimedGreetService>();
+            //services.AddSingleton<IGreetService, ConfigurableGreetService>(); //<--- single object serves all request
+
+            services.AddTransient<IGreetService, ConfigurableGreetService>();   //<--- a new object is created for every request
+
+            //services.AddSingleton<IGreetService, ExtendedConfigurableGreetService>();
+            services.AddSingleton<IGreetService, ExtendedConfigurableGreetServiceV2>();
+
+            //logger.LogInformation("Configure Service Method completed.");
+            Console.WriteLine("Configure Service Finished");
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,13 +64,60 @@ namespace HelloNetCore
         // But pipeline functionalites execute on the request.
 
         // CONFIGURE YOUR MIDDLEWARES HERE
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            //Preconfigured Services
+            IApplicationBuilder app, 
+            IWebHostEnvironment env, 
+            ILogger<Startup> logger,  //<-- already injected in the constructor of startup
+            //Services configured by CongiureService method
+            IGreetService greetService
+            )
         {
+
+            //Dependency Injection
+            /*
+             * All parameters supplied to Configure function are actually dependency injection requests
+             * And .NET core framework is auto injecting these dependencies
+             * The order of the call in
+             *      0. Configure Builtin .NET core services like IApplicationBuilder is done by .NET core framework
+             *      1. ConfigureServices   (Configure User related services like Model, Repositories etc)
+             *      2. Configure (Middleware) <--- can use sercies from step 0 and step 1
+             *      3. User request comes at this point
+             * Few builtin services of .NET core is preconfigures
+             * Configure funcation can demand any service either preconfigured or User configured
+             */
+
+
+            logger.LogInformation("Middleware configuration Started");
             //Adding a middleware in the pipeline.
 
             //Middleware to Pass control to the next middleware
             if(env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
+
+
+            //service is auto injected to a method! here it is injected to Configure method above
+            
+            
+            
+            app.UseMappedUrl("/welcome", async context =>
+            {
+                //we are using auto injected service called greetService
+                
+
+                var pathFragments = context.Request.Path.Value.Split('/');
+                if (pathFragments.Length > 2)
+                {
+                    logger.LogInformation($"{greetService.GetHashCode()} serving url {context.Request.Path}");
+                    var name = pathFragments[2];
+                    await context.Response.WriteAsync(greetService.Greet(name));
+                }
+                else
+                {
+                    context.Response.StatusCode = 400;
+                    await context.Response.WriteAsync("Please specify the name for greeting as /wish/someone");
+                }
+            });
 
 
             app.UseMappedUrl("/wish", async context =>
@@ -49,17 +126,20 @@ namespace HelloNetCore
                 //var service = new HelloGreetService();
 
                 //approach #2 --> Get It from appbuilder
-                var service = app.ApplicationServices.GetService<IGreetService>();
+                //var service = app.ApplicationServices.GetService<IGreetService>();
 
-                if (context.Request.Query.ContainsKey("name"))
+                var service = app.ApplicationServices.GetService<IFormatterService>();
+
+                var pathFragments = context.Request.Path.Value.Split('/');
+                if(pathFragments.Length>2)
                 {
-                    var name = context.Request.Query["name"];
-                    await context.Response.WriteAsync(service.Greet(name));
+                    var name = pathFragments[2];
+                    await context.Response.WriteAsync(service.Format(name));
                 }
                 else
                 {
                     context.Response.StatusCode = 400;
-                    await context.Response.WriteAsync("Please specify the name for greeting as ?name=Someone");
+                    await context.Response.WriteAsync("Please specify the name for greeting as /wish/someone");
                 }
             });
 
@@ -181,6 +261,8 @@ namespace HelloNetCore
 
 
             app.Run(SayHelloWorld);
+
+            logger.LogInformation("Middleware configuration Finished");
         }
 
         
