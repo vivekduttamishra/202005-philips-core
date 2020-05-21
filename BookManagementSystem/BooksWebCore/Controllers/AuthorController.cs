@@ -50,9 +50,19 @@ namespace BooksWebCore.Controllers
         [HttpPost]
         public ActionResult Create(Author author) //model binding
         {
-            authorManager.AddAuthor(author);
-            //return View("Details", author);
-            return RedirectToAction("List");
+            if(ModelState.IsValid)
+            {
+                authorManager.AddAuthor(author);
+                //return View("Details", author);
+                return RedirectToAction("List");
+            }
+            else
+            {
+                //send user back to the same page
+                Response.StatusCode = 400;
+                return View();
+            }
+            
         }
 
 

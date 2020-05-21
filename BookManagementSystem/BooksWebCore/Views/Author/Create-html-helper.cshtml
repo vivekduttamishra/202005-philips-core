@@ -1,0 +1,35 @@
+﻿@model ConceptArchitect.BookManagement.Author
+
+
+
+<h2>Add New Author Info</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Name)
+    @Html.EditorFor(model => model.Name)
+
+
+    @Html.LabelFor(model => model.Email)
+    @Html.EditorFor(model => model.Email)
+
+
+    @Html.LabelFor(model => model.Biography)
+    @Html.EditorFor(model => model.Biography)
+
+
+    @Html.LabelFor(model => model.BirthDate)
+    @Html.EditorFor(model => model.BirthDate)
+
+
+    @Html.LabelFor(model => model.DeathDate)
+    @Html.EditorFor(model => model.DeathDate)
+
+    @Html.LabelFor(model => model.Photograph)
+    @Html.EditorFor(model => model.Photograph)
+
+    <input type = "submit" value = "Add" class="btn btn-primary" />
+
+
+}

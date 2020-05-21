@@ -1,35 +1,40 @@
 ﻿@model ConceptArchitect.BookManagement.Author
 
 
+Page last updated on @DateTime.Now.ToLongTimeString()
 
 <h2>Add New Author Info</h2>
 
+<div class="text-danger" asp-validation-summary="All" >
+    
+</div>
 
-@using (Html.BeginForm())
-{
-    @Html.LabelFor(model => model.Name)
-    @Html.EditorFor(model => model.Name)
+<form method="post" novalidate>
+
+    <label asp-for="@Model.Name" class="control-label"></label><br />
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger" ></span>
+    <br />
+    
+
+    <label asp-for="Biography" class="control-label"></label><br />
+    <input asp-for="Biography" class="form-control"/><span asp-validation-for="Biography" class="text-danger"></span><br />
+
+    <label asp-for="Email" class="control-label"></label><br />
+    <input asp-for="Email" class="form-control"/><span asp-validation-for="Email" class="text-danger"></span><br />
+
+    <label asp-for="BirthDate" class="control-label"></label><br />
+    <input asp-for="BirthDate" class="form-control"/><span asp-validation-for="BirthDate" class="text-danger"></span><br />
+
+    <label asp-for="DeathDate" class="control-label">Date Date (Leave Blank for leaving authors)</label><br />
+    <input asp-for="DeathDate" class="form-control"/><span asp-validation-for="DeathDate" class="text-danger"></span><br />
+
+    <label asp-for="Photograph" class="control-label"></label><br />
+    <input asp-for="Photograph" class="form-control"/><span asp-validation-for="Photograph" class="text-danger"></span><br />
+
+    <input type="submit" value="Add" class="btn btn-primary" />
+
+</form>
 
 
-    @Html.LabelFor(model => model.Email)
-    @Html.EditorFor(model => model.Email)
-
-
-    @Html.LabelFor(model => model.Biography)
-    @Html.EditorFor(model => model.Biography)
-
-
-    @Html.LabelFor(model => model.BirthDate)
-    @Html.EditorFor(model => model.BirthDate)
-
-
-    @Html.LabelFor(model => model.DeathDate)
-    @Html.EditorFor(model => model.DeathDate)
-
-    @Html.LabelFor(model => model.Photograph)
-    @Html.EditorFor(model => model.Photograph)
-
-    <input type = "submit" value = "Add" class="btn btn-primary" />
-
-
-}
+<partial name="_ValidationScriptsPartial" />
