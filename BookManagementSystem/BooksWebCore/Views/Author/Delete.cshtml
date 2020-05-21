@@ -2,9 +2,14 @@
 
 <h1>Remove Author @Model.Name ?</h1>
 
-@Html.Partial("AuthorInfo", Model)
+<partial name="_AuthorInfo" for="@Model" />
 
-<input type="button" class="btn btn-danger" value="Yes! Delete This Author" />
-<a asp-action="List" class="btn btn-primary">No I changed my mind</a>
+<form method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="submit" class="btn btn-danger" value="Yes! Delete This Author" />
+    <a asp-action="List" class="btn btn-primary">No I changed my mind</a>
+</form>
+
+
 
 

@@ -1,5 +1,6 @@
 ﻿using ConceptArchitect.BookManagement;
 using ConceptArchitect.BookManagement.FlatFileRepository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,18 @@ namespace BooksWebCore.Controllers
             return View(author);
         }
 
+        [HttpPost]
+        public ActionResult Delete(string id, Author author) //dummy is to change c# singature. it will get a null value
+        {
+            authorManager.DeleteAuthor(id);
+            return RedirectToAction("List");
+        }
+
+        [HttpDelete] //Not supported in web app
+        public ActionResult Delete(string id, string dummy) //dummy is to change c# singature. it will get a null value
+        {
+            return Content($"Author {id} deleted using DELETE");
+        }
 
 
     }

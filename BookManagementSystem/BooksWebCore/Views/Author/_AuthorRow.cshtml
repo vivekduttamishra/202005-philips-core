@@ -1,0 +1,21 @@
+﻿@model ConceptArchitect.BookManagement.Author
+
+
+<tr>
+    <td>@Model.Name</td>
+    <td>@Model.Age</td>
+    <td>@Model.Books.Count</td>
+    <td>
+        @*<a href="/author/details/@Model.Id" class="btn btn-sm btn-info">Details</a>
+        <a href="#" class="btn btn-sm btn-primary">Edit</a>
+        <a href="#" class="btn btn-sm btn-danger">Delete</a>*@
+
+        @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-info" })
+
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+
+        <a asp-action="delete" asp-route-id="@Model.Id" class="btn btn-sm btn-danger" >Remove</a>
+
+    </td>
+
+</tr>
