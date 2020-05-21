@@ -20,7 +20,13 @@ namespace BooksWebCore.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //return View();
+            return RedirectToAction("List", "Author");
+        }
+
+        public void Problem()
+        {
+            throw new Exception("Something Went Wrong while invokeing Problem Action");
         }
 
         public IActionResult Privacy()

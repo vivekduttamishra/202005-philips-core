@@ -1,0 +1,10 @@
+﻿@model ConceptArchitect.BookManagement.Author
+
+<h1>Remove Author @Model.Name ?</h1>
+
+@Html.Partial("AuthorInfo", Model)
+
+<input type="button" class="btn btn-danger" value="Yes! Delete This Author" />
+<a asp-action="List" class="btn btn-primary">No I changed my mind</a>
+
+

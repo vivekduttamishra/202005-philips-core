@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ConceptArchitect.BookManagement.Author> 
+
+<h2>Authors</h2>
+
+@*<a href="/author/create" class="btn btn-sm btn-default">Add</a>*@
+
+
+@Html.ActionLink("Add","Create",null,new { @class = "btn btn-sm btn-primary" })
+
+
+<table class="table table-condensed table-hover table-responsive table-striped" >
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Book's Written</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var author in Model)
+        {
+            <tr>
+                <td>@author.Name</td>
+                <td>@author.Age</td>
+                <td>@author.Books.Count</td>
+                <td>
+                    @*<a href="/author/details/@author.Id" class="btn btn-sm btn-info">Details</a>
+        <a href="#" class="btn btn-sm btn-primary">Edit</a>
+        <a href="#" class="btn btn-sm btn-danger">Delete</a>*@
+
+                    @Html.ActionLink("Details", "Details", new { id = author.Id }, new { @class = "btn btn-sm btn-info" })
+
+                    @Html.ActionLink("Edit", "Edit", new { id = author.Id }, new { @class = "btn btn-sm btn-primary" })
+
+                    @Html.ActionLink("Delete", "Delete", new { id = author.Id }, new { @class = "btn btn-sm btn-danger" })
+
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

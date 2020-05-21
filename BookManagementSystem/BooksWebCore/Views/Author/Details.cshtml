@@ -1,0 +1,10 @@
+﻿@model ConceptArchitect.BookManagement.Author
+
+<h2>About @Model.Name</h2>
+
+
+
+@Html.ActionLink("Back To List", "List", null, new { @class = "btn btn-primary btn-sm" })
+
+@Html.Partial("AuthorInfo")
+

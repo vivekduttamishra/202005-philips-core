@@ -93,13 +93,11 @@ namespace HelloNetCore
              */
 
 
-
-
             logger.LogInformation("Middleware configuration Started");
             //Adding a middleware in the pipeline.
 
             //Middleware to Pass control to the next middleware
-            //if(env.IsDevelopment())
+            if(env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
 
@@ -107,6 +105,8 @@ namespace HelloNetCore
 
             //app.UseMvcWithDefaultRoute();
 
+            //app.UseNotFoundRecorder();
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default",
