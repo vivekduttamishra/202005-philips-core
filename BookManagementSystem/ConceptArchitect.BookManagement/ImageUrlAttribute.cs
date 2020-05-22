@@ -18,6 +18,10 @@ namespace ConceptArchitect.BookManagement
 
         public override bool IsValid(object value)
         {
+            if (value == null) //user has not supplied the value
+                return true; // It is not a url so not invalid url
+
+
             var urlParts = value.ToString().ToLower().Split('.');
             var _extensions = ValidExtensions.ToLower().Split(',');
 

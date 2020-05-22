@@ -10,6 +10,7 @@ namespace ConceptArchitect.BookManagement
     [AgeRange(MinAge =5, MaxAge =110)]
     public class Author 
     {
+        [UniqueAuthorId]
         public string Id { get; set; }
 
         [Required]
@@ -73,13 +74,20 @@ namespace ConceptArchitect.BookManagement
     public class User
     {
         [Required]
-        public string Name;
+        public string Name { get; set; }
 
         [EmailAddress]
+        [Required]
         public string Email { get; set; } //login id
 
         [Required]
-        public string Password { get; set; } 
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        public string PhotoUrl { get; set; }
+        public string FacebookId { get; set; }
+        public string TwitterId { get; set; }
+
     }
 
 

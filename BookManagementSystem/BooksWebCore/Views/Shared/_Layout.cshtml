@@ -27,6 +27,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="List">Books</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -42,6 +49,7 @@
         <div class="container">
             &copy; 2020 - BooksWebCore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+        @RenderSection("Footer", required: false)
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

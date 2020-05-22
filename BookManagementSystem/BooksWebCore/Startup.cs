@@ -39,6 +39,16 @@ namespace BooksWebCore
                 return BookStore.Load(file);
             });
 
+            services.AddSingleton<UserStore>(provider =>
+            {
+                var root = provider.GetService<IWebHostEnvironment>().ContentRootPath;
+                var file = $"{root}/App_Data/users.db";
+                return UserStore.Load(file);
+            });
+
+
+            services.AddScoped<IRepository<User, string>, FlatFileUserRepository>();
+            services.AddScoped<IUserAdmin, SimpleUserManager>();
             services.AddScoped<IRepository<Author, string>, FlatFileAuthorRepository>();
             services.AddScoped<IAuthorManager, SimpleAuthorManager>();
 
