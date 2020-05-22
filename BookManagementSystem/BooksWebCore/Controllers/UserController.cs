@@ -54,17 +54,17 @@ namespace BooksWebCore.Controllers
 
         public ActionResult Login()
         {
-            var user = new User();
+            var user = new LoginViewModel();
             return View(user);
         }
 
         [HttpPost]
-        public ActionResult Login(User user)
+        public ActionResult Login(LoginViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                var u = userManager.Authenticate(user.Email, user.Password);
-                if (u != null)
+                var user = userManager.Authenticate(vm.Email, vm.Password);
+                if (user != null)
                     return RedirectToAction("Index", "Home");
                 else
                     ModelState.AddModelError("*", "Invalid Credentials");

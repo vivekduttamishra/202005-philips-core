@@ -32,26 +32,35 @@ namespace BooksWebCore
 
 
             //To create object using special mechanism and not simple constructor call
+            ConfigureFlatFileRepositories(services);
+            //ConfigureEFRepositories(services);
+
+            services.AddScoped<IUserAdmin, SimpleUserManager>();
+            services.AddScoped<IAuthorManager, SimpleAuthorManager>();
+
+        }
+
+        private static void ConfigureEFRepositories(IServiceCollection services)
+        {
+            
+        }
+
+        private static void ConfigureFlatFileRepositories(IServiceCollection services)
+        {
             services.AddSingleton<BookStore>(provider =>
             {
-                var root= provider.GetService<IWebHostEnvironment>().ContentRootPath;
+                var root = provider.GetService<IWebHostEnvironment>().ContentRootPath;
                 var file = $"{root}/App_Data/books.db";
                 return BookStore.Load(file);
             });
-
             services.AddSingleton<UserStore>(provider =>
             {
                 var root = provider.GetService<IWebHostEnvironment>().ContentRootPath;
                 var file = $"{root}/App_Data/users.db";
                 return UserStore.Load(file);
             });
-
-
             services.AddScoped<IRepository<User, string>, FlatFileUserRepository>();
-            services.AddScoped<IUserAdmin, SimpleUserManager>();
             services.AddScoped<IRepository<Author, string>, FlatFileAuthorRepository>();
-            services.AddScoped<IAuthorManager, SimpleAuthorManager>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

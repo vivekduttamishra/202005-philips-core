@@ -8,29 +8,37 @@ namespace ConceptArchitect.BookManagement
 {
     [Serializable]
     [AgeRange(MinAge =5, MaxAge =110)]
+    [DataContract]
     public class Author 
     {
         [UniqueAuthorId]
+        [DataMember]
         public string Id { get; set; }
 
         [Required]
+        [DataMember(IsRequired =true)]
         public string Name { get; set; }
 
         [Required]
         [StringLength(2000,MinimumLength =10,ErrorMessage ="Biography Must be between 10-2000 chars")]
+        [DataMember(IsRequired = true)]
         public string Biography { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
+        [DataMember(IsRequired = true)]
         public DateTime BirthDate { get; set; }
 
         [DataType(DataType.Date)]
+        [DataMember(IsRequired = false)]
         public DateTime? DeathDate { get; set; } //may be null for living authors
 
         [EmailAddress]
+        [DataMember]
         public string  Email { get; set; } //may be null
 
         [ImageUrl(ValidExtensions ="jpg,gif,png")]
+        [DataMember]
         public string Photograph { get; set; }
 
         public IList<Book> Books { get; set; } = new List<Book>();
@@ -71,20 +79,25 @@ namespace ConceptArchitect.BookManagement
     }
 
     [Serializable]
+    
     public class User
     {
         [Required]
+        
         public string Name { get; set; }
 
         [EmailAddress]
         [Required]
+        
         public string Email { get; set; } //login id
 
         [Required]
         [DataType(DataType.Password)]
+        
         public string Password { get; set; }
-
+        
         public string PhotoUrl { get; set; }
+
         public string FacebookId { get; set; }
         public string TwitterId { get; set; }
 
