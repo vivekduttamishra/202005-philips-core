@@ -37,6 +37,8 @@ namespace BooksWebCore
 
             services.AddScoped<IUserAdmin, SimpleUserManager>();
             services.AddScoped<IAuthorManager, SimpleAuthorManager>();
+            services.AddScoped<IBookManager, SimpleBookManager>();
+            services.AddScoped<BookManagerRecordCreator>(); //no interface for this class available
 
         }
 
@@ -61,6 +63,7 @@ namespace BooksWebCore
             });
             services.AddScoped<IRepository<User, string>, FlatFileUserRepository>();
             services.AddScoped<IRepository<Author, string>, FlatFileAuthorRepository>();
+            services.AddScoped<IRepository<Book, String>, FlatFileBookRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

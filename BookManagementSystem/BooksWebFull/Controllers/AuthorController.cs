@@ -4,8 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace BooksWebFull.Controllers
 {
@@ -45,12 +48,53 @@ namespace BooksWebFull.Controllers
             };
 
         #endregion
-        public ViewResult List()
+        public ActionResult List(string id)
         {
+            if (id == null)
+            {
+                var accept = Request.Headers["accept"];
+                if (accept != null)
+                {
+                    accept = accept.ToLower();
+                    if (accept.Contains("json"))
+                        id = "json";
+                    else if (accept.Contains("application/xml"))
+                        id = "xml";
+                    else
+                        id = "html";
+                }
+                else
+                {
+                    id = "json";
+                }
+            }
+
             var authors = authorManager.GetAllAuthors();
-            return View(authors);
+
+            if (id == "json")
+                return Json(authors, JsonRequestBehavior.AllowGet);
+            else if (id == "xml")
+                return AuthorListXml(authors);
+            else
+                return View(authors);
+
         }
 
+        private ActionResult AuthorListXml(IEnumerable<Author> authors)
+        {
+            var authorXml = new XElement("Authors",
+                    from author in authors
+                    select new XElement("Author",
+                            new XAttribute("Id",author.Id),
+                            new XElement("Name", author.Name),
+                            new XElement("Biography", author.Biography),
+                            new XElement("BirthDate", author.BirthDate),
+                            new XElement("DeathDate", author.DeathDate),
+                            new XElement("Email", author.Email),
+                            new XElement("Photograph", author.Photograph)));
+
+            return Content(authorXml.ToString(), "application/xml");
+        }
 
         public ActionResult Details(string id)
         {
@@ -67,6 +111,7 @@ namespace BooksWebFull.Controllers
         public ActionResult Create()
         {
             var author = new Author();
+            ViewResult r = null;
             return View(author);
         }
 

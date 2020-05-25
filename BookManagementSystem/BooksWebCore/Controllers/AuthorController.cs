@@ -21,8 +21,14 @@ namespace BooksWebCore.Controllers
             this.authorManager = authorManager;
         }
 
+
+        public IActionResult ApiList()
+        {
+            var authors = authorManager.GetAllAuthors();
+            return Ok(authors); //return a simple api result (json/xml) back to user with status 200
+        }
       
-        public ViewResult List()
+        public IActionResult List()
         {
             var authors = authorManager.GetAllAuthors();
             return View(authors);

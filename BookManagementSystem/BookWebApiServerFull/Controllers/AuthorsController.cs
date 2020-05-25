@@ -30,18 +30,50 @@ namespace BookWebApiServerFull.Controllers
 
                     BirthDate=new DateTime(1805,1,1),
                     DeathDate=new DateTime(1875,1,1)
+                },
+                new Author()
+                {
+                    Id="john-grisham",
+                    Name="John Grisham",
+                    Biography="Leading author of legal fiction",
+
+                    BirthDate=new DateTime(1956,1,1)
+                    
+                },new Author()
+                {
+                    Id="conan-doyle",
+                    Name="Sir Aruthur Dr Conan Doyle",
+                    Biography="The author of altime greatest detective 'Sherlock Holmes'",
+
+                    BirthDate=new DateTime(1880,1,1),
+                    DeathDate=new DateTime(1923,1,1)
                 }
             };
 
         #endregion
+
+        //uses conventional route ---> [Route("api/authors")]
         public IEnumerable<Author> Get()
         {
             return authors;
         }
 
+        //uses conventional route ---> [Route("api/authors/{id}")]
         public Author Get(string id)
         {
             return authors.FirstOrDefault(a => a.Id == id);
+        }
+
+        [Route("api/authors/born-after/{year}")]
+        public IList<Author> GetAuthorsBornAfter(int year)
+        {
+            return authors.Where(a => a.BirthDate.Year >= year).ToList();
+        }
+
+        [Route("api/authors/living")]
+        public IList<Author> GetLivingAuthors()
+        {
+            return authors.Where(a => a.DeathDate == null).ToList();
         }
     }
 }

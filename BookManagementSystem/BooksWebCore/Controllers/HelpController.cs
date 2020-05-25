@@ -17,8 +17,8 @@ namespace BooksWebCore.Controllers
         {
             return new ContentResult() 
             { 
-                Content = "<h1>Welcome To Book's Web Help Page</h1>" ,
-                ContentType="text/html", //text/plain is the default in .NET Core
+                Content = "<h1>Welcome To Book's Web Help Page</h1>" 
+                ,ContentType="text/html", //text/plain is the default in .NET Core
 
             };
         }

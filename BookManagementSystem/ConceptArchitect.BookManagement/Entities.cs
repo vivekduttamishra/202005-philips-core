@@ -41,6 +41,8 @@ namespace ConceptArchitect.BookManagement
         [DataMember]
         public string Photograph { get; set; }
 
+        //-->this is not a data memeber ---> when sending a list authors, don't include their book int he list
+        
         public IList<Book> Books { get; set; } = new List<Book>();
 
 
@@ -57,25 +59,34 @@ namespace ConceptArchitect.BookManagement
 
     }
     [Serializable]
+    [DataContract]
     public class Book
     {
-        
+        [DataMember]
         public string Id { get; set; }
 
         [Required]
+        [DataMember(IsRequired =true)]
         public string Title { get; set; }
 
+        [DataMember]
         public Author Author { get; set; }
         
         [Range(0,5000)]
         [Required]
+        [DataMember(IsRequired = true)]
         public int Price { get; set; }
 
+        [DataMember(IsRequired = true)]
         [Required]
         [StringLength(2000,MinimumLength=10)]
         public string Description { get; set; }
+        [DataMember(IsRequired = true)]
 
         public string CoverPage { get; set; }
+
+        [DataMember(IsRequired = true)]
+        public string Tags { get; internal set; }
     }
 
     [Serializable]
