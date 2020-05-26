@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ConceptArchitect.BookManagement;
 using ConceptArchitect.BookManagement.FlatFileRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,7 +37,8 @@ namespace BooksWebCore
                 {
                     //ingore looped references
                     opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                })       
+                })
+                .AddXmlDataContractSerializerFormatters()
                 ;
           
             ConfigureFlatFileRepositories(services);
@@ -45,6 +48,12 @@ namespace BooksWebCore
             services.AddScoped<IAuthorManager, SimpleAuthorManager>();
             services.AddScoped<IBookManager, SimpleBookManager>();
             services.AddScoped<BookManagerRecordCreator>(); //no interface for this class available
+
+            services.AddLocalization(opt =>
+            {
+                opt.ResourcesPath = "Resources";
+            });
+
 
         }
 
@@ -84,6 +93,22 @@ namespace BooksWebCore
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+
+            var supportedCultures = new List<CultureInfo>()
+            {
+                new CultureInfo("en"),
+                new CultureInfo("hi"),
+                new CultureInfo("en-US")
+            };
+
+            var localizationOptions = new RequestLocalizationOptions()
+            {
+                SupportedCultures = supportedCultures,
+                SupportedUICultures=supportedCultures,
+                DefaultRequestCulture=new RequestCulture("hi")
+            };
+
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseRouting();
             //app.UseAuthorization();

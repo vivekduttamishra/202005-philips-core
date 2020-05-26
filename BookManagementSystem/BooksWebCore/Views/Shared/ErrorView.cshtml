@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewData["Title"] = "ErrorView";
+}
+
+<h1 class="text-danger">Error: @Html.ValidationMessage("Reason")</h1>
+
+<div class="text-danger">
+    @Html.ValidationSummary();
+</div>
+

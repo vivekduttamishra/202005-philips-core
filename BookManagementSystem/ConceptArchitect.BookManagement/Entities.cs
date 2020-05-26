@@ -42,7 +42,7 @@ namespace ConceptArchitect.BookManagement
         public string Photograph { get; set; }
 
         //-->this is not a data memeber ---> when sending a list authors, don't include their book int he list
-        [DataMember]
+        //[DataMember]
         public IList<Book> Books { get; set; } = new List<Book>();
 
 

@@ -1,4 +1,5 @@
-﻿using ConceptArchitect.BookManagement;
+﻿using BooksWebCore.FrameworkApi;
+using ConceptArchitect.BookManagement;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,8 @@ namespace BooksWebCore.Controllers
             return authorManager.GetAllAuthors();
         }
 
-        [Route("{id}")]  //this path fragment is in combination with controller level Route[]
-        public IActionResult GetAuthorById(string id)
+        [Route("old/{id}")]  //this path fragment is in combination with controller level Route[]
+        public IActionResult GetAuthorByIdOldVersion(string id)
         {
             var author= authorManager.GetAuthorById(id);
             if (author != null)
@@ -34,8 +35,15 @@ namespace BooksWebCore.Controllers
                 //return NoFound(); //return status 404 without anydata
                 //return NotFound($"No Author with {id} found");   //return with simple message --> text/plain
                 return NotFound(new { Error = "No Author With Given Id", Id = id }); //return with structure message --> application/json
-
             }
+        }
+
+        [NullIsError404]
+        [Route("{id}")]  //this path fragment is in combination with controller level Route[]
+        public IActionResult GetAuthorById(string id)
+        {
+            var author = authorManager.GetAuthorById(id);
+            return Ok(author);   //Happy Path
         }
 
         [Route("{id}/email")]

@@ -1,7 +1,9 @@
-﻿using ConceptArchitect.BookManagement;
+﻿using BooksWebCore.FrameworkApi;
+using ConceptArchitect.BookManagement;
 using ConceptArchitect.BookManagement.FlatFileRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +12,23 @@ using System.Threading.Tasks;
 
 namespace BooksWebCore.Controllers
 {
+    [NullIsError404(Reason ="No Such Author")]      //applies or all action in this controller
     public class AuthorController : Controller
     {
 
+        
         IAuthorManager authorManager;
+        IStringLocalizer<AuthorController> localizer;
+        IStringLocalizer<Shared> sharedLocalizer;
         
         //.NET core dependency injection will inject my dependency
-        public AuthorController(IAuthorManager authorManager)
+        public AuthorController(IAuthorManager authorManager, 
+            IStringLocalizer<AuthorController> localizer,
+            IStringLocalizer<Shared> sharedLocalizer)
         {
             this.authorManager = authorManager;
+            this.localizer = localizer;
+            this.sharedLocalizer = sharedLocalizer;
         }
 
 
@@ -31,24 +41,41 @@ namespace BooksWebCore.Controllers
         public IActionResult List()
         {
             var authors = authorManager.GetAllAuthors();
+
+            ViewBag.PageTitle = localizer["PageTitle"];
+            ViewBag.NewAuthorLinkText = localizer["NewAuthorLinkText"];
+            ViewBag.DetailsText = sharedLocalizer["AuthorDetailsLinkText"];
+
             return View(authors);
         }
 
-
+        [NullIsError404(Reason = "Author Not Found")]  //action level attribute overrides controller level attribute
+        //[RequiredParameter("id")] <--- if id is null or not given send Error 400
         public ActionResult Details(string id)
         {
             //business logic shouldn't be part of the controller
             //var author = dummyAuthors.FirstOrDefault(a => a.Id == id);
 
             var author = authorManager.GetAuthorById(id);
-
+            //what if author is null?
+            if (author == null)
+            {
+                //return E404
+            }
             return View(author);
         }
+
 
 
         [HttpGet]
         public ActionResult Create()
         {
+
+            //should be created by authenticated users only
+            //if (!User.Identity.IsAuthenticated)
+            //    return RedirectToAction("Login", "User");
+
+
             var author = new Author();
             return View(author);
         }
@@ -71,7 +98,7 @@ namespace BooksWebCore.Controllers
             
         }
 
-
+        //[NullIsError404(Reason = "Author Not Found")]
         public ActionResult Delete(string id)
         {
             //authorManager.DeleteAuthor(id);
@@ -81,6 +108,7 @@ namespace BooksWebCore.Controllers
         }
 
         [HttpPost]
+        
         public ActionResult Delete(string id, Author author) //dummy is to change c# singature. it will get a null value
         {
             authorManager.DeleteAuthor(id);

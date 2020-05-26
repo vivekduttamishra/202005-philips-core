@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BooksWebCore.FrameworkApi;
 using BooksWebCore.ViewModels;
 using ConceptArchitect.BookManagement;
 using Microsoft.AspNetCore.Http;
@@ -29,13 +30,11 @@ namespace BooksWebCore.Controllers
         }
 
         [HttpGet("{id}")]
+        [NullIsError404(Reason ="No Such Book")]
         public IActionResult GetBookById(string id)
         {
             var book = bookManager.GetBookById(id);
-            if (book == null)
-                return NotFound(new { Error = "Book Not Found With Provided Id", Id = id });
-            else
-                return Ok(book);
+            return Ok(book);
         }
 
         [HttpGet("by/{author}")]
