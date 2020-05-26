@@ -11,6 +11,8 @@ namespace ConceptArchitect.BookManagement
 
         Author GetAuthorById(string id);
 
+        IList<Author> GetAuthorByName(string name);
+
         IList<Author> GetAllAuthors();
 
         IList<Author> GetAuthors(string q);

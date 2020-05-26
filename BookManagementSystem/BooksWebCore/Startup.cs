@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace BooksWebCore
 {
@@ -24,14 +25,19 @@ namespace BooksWebCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
 
-            //var store = BookStore.Load(@"c:\temp\books.db");
-            //var rep = new FlatFileAuthorRepository(store);
-            //authorManager = new SimpleAuthorManager(rep);
-
-
-            //To create object using special mechanism and not simple constructor call
+            //configure asp.net mvc (webapi) services managed by a controller
+            services
+                //.AddControllers() // if you need only web api and no razor view engine
+                .AddControllersWithViews() //if you need both webapi and razor support
+                  //Replace builtin Serializer with NewtonSoftJson
+                .AddNewtonsoftJson( opt=> 
+                {
+                    //ingore looped references
+                    opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })       
+                ;
+          
             ConfigureFlatFileRepositories(services);
             //ConfigureEFRepositories(services);
 
@@ -52,7 +58,7 @@ namespace BooksWebCore
             services.AddSingleton<BookStore>(provider =>
             {
                 var root = provider.GetService<IWebHostEnvironment>().ContentRootPath;
-                var file = $"{root}/App_Data/books.db";
+                var file = $"{root}/App_Data/books2.db";
                 return BookStore.Load(file);
             });
             services.AddSingleton<UserStore>(provider =>

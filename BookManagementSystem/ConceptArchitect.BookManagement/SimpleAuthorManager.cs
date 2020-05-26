@@ -19,6 +19,12 @@ namespace ConceptArchitect.BookManagement
             this.authorRepository = authorRepository;
         }
 
+        public IList<Author> GetAuthorByName(string name)
+        {
+            name = name.ToLower();
+            return authorRepository.GetAll(a => a.Name.ToLower() == name);
+        }
+
         public string AddAuthor(Author author)
         {
             if (author == null)
