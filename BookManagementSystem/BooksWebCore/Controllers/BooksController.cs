@@ -31,6 +31,7 @@ namespace BooksWebCore.Controllers
 
         [HttpGet("{id}")]
         [NullIsError404(Reason ="No Such Book")]
+        [EntityNotFoundIs404]
         public IActionResult GetBookById(string id)
         {
             var book = bookManager.GetBookById(id);

@@ -11,9 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksWebFull", "BooksWebFul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksWebCore", "BooksWebCore\BooksWebCore.csproj", "{55E824ED-C7EB-4A90-B659-C43017AECA3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConceptArchitect.BookManagement.EFRep", "ConceptArchitect.BookManagement.EFRep\ConceptArchitect.BookManagement.EFRep.csproj", "{7B310F7D-692F-480F-91E4-E9B211D51736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConceptArchitect.BookManagement.EFRep", "ConceptArchitect.BookManagement.EFRep\ConceptArchitect.BookManagement.EFRep.csproj", "{7B310F7D-692F-480F-91E4-E9B211D51736}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookWebApiServerFull", "BookWebApiServerFull\BookWebApiServerFull.csproj", "{D42F54A3-AEE8-4ACA-9BC0-BF417713228F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksManagementXUnitTest", "BooksManagementXUnitTest\BooksManagementXUnitTest.csproj", "{FBD5E467-9E2A-4D76-925A-1B3E975C28A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D42F54A3-AEE8-4ACA-9BC0-BF417713228F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D42F54A3-AEE8-4ACA-9BC0-BF417713228F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D42F54A3-AEE8-4ACA-9BC0-BF417713228F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD5E467-9E2A-4D76-925A-1B3E975C28A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD5E467-9E2A-4D76-925A-1B3E975C28A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD5E467-9E2A-4D76-925A-1B3E975C28A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD5E467-9E2A-4D76-925A-1B3E975C28A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

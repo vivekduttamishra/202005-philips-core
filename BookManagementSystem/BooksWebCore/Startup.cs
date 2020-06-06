@@ -40,7 +40,11 @@ namespace BooksWebCore
                 })
                 .AddXmlDataContractSerializerFormatters()
                 ;
-          
+
+            services.AddRazorPages();
+
+            
+
             ConfigureFlatFileRepositories(services);
             //ConfigureEFRepositories(services);
 
@@ -108,13 +112,20 @@ namespace BooksWebCore
                 DefaultRequestCulture=new RequestCulture("hi")
             };
 
+            
+
+
             app.UseRequestLocalization(localizationOptions);
+
+            
 
             app.UseRouting();
             //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

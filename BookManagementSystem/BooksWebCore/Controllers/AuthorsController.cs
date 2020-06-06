@@ -1,5 +1,6 @@
 ﻿using BooksWebCore.FrameworkApi;
 using ConceptArchitect.BookManagement;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,9 @@ namespace BooksWebCore.Controllers
             this.authorManager = manager;
         }
 
-        public IList<Author> GetAllAuthors()
+        public IActionResult GetAllAuthors()
         {
-            return authorManager.GetAllAuthors();
+            return Ok(authorManager.GetAllAuthors());
         }
 
         [Route("old/{id}")]  //this path fragment is in combination with controller level Route[]
@@ -59,6 +60,7 @@ namespace BooksWebCore.Controllers
 
 
         [Route("{id}/biography")]
+        [Authorize]
         public IActionResult GetAuthorsBiography(string id)
         {
             var author = authorManager.GetAuthorById(id);
@@ -87,7 +89,8 @@ namespace BooksWebCore.Controllers
             {
              
                 authorManager.AddAuthor(author);
-                return Created($"/api/authors/{author.Id}",author);
+                //return Created($"/api/authors/{author.Id}",author);
+                return CreatedAtAction(nameof(GetAuthorById), new { Id=author.Id},author);
             }
             else
             {

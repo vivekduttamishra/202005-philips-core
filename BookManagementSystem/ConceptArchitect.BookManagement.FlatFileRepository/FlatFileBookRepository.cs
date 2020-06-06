@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace ConceptArchitect.BookManagement.FlatFileRepository
 {
@@ -62,7 +63,7 @@ namespace ConceptArchitect.BookManagement.FlatFileRepository
             if (store.books.ContainsKey(id))
                 return store.books[id];
             else
-                return null;
+                throw new EntityNotFoundException(Entity: typeof(Book), Id: id);//return null;
         }
 
         public Book GetOne(Func<Book, bool> matcher)

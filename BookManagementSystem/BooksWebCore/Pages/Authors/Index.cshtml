@@ -1,0 +1,15 @@
+﻿@page
+@model BooksWebCore.Pages.AuthorListModel
+@{
+    ViewData["Title"] = "AuthorList";
+}
+
+<h1>@Model.PageTitle</h1>
+
+<ul>
+    @foreach (var author in Model.Authors)
+    {
+        <li>@author.Name</li>
+    }
+</ul>
+

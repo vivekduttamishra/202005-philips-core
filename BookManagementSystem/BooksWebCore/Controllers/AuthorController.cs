@@ -74,8 +74,6 @@ namespace BooksWebCore.Controllers
             //should be created by authenticated users only
             //if (!User.Identity.IsAuthenticated)
             //    return RedirectToAction("Login", "User");
-
-
             var author = new Author();
             return View(author);
         }
