@@ -9,8 +9,8 @@ namespace BooksWebCore.ViewModels
 {
     public class NewBook: Book
     {
-        [Required]
-        //[ExistingAuthor]
+        //[Required]
+        [ExistingAuthor]
         public string AuthorId { get; set; }
 
     }

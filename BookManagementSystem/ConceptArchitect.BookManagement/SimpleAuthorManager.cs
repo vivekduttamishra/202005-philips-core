@@ -88,7 +88,8 @@ namespace ConceptArchitect.BookManagement
 
         public Author GetAuthorById(string id)
         {
-            return authorRepository.GetById(id);
+
+            return authorRepository.GetById( IdTool.Normalize(id)  );
         }
 
         public IList<Author> GetAuthors(string q)

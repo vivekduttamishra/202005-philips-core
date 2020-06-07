@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using BooksWebCore.FrameworkApi;
 using BooksWebCore.Hubs;
@@ -54,13 +55,15 @@ namespace BooksWebCore.Controllers
             return Ok(books);
         }
 
+       
+
         [HttpPost]
         [Authorize(Roles ="Admin")]
-        public IActionResult AddBook([FromBody]NewBook vm)
+        public async Task<IActionResult> AddBook([FromBody]SimpleBook vm)
         {
-            int x = 0; 
+            
 
-            if(true)
+            if(ModelState.IsValid)
             {
                 var book = new Book()
                 {
@@ -70,11 +73,12 @@ namespace BooksWebCore.Controllers
                     Description = vm.Description,
                     CoverPage = vm.CoverPage,
                     Tags = vm.Tags,
-                    Author = authorManager.GetAuthorById(vm.AuthorId) 
+                    Author = authorManager.GetAuthorById(vm.Author) 
                 };
 
                 bookManager.AddBook(book);
                 vm.Id = book.Id;
+                await bookHub.Clients.All.SendAsync("BookAdded", vm);
                 return Created($"/api/books/{book.Id}", vm);
             }
             else
@@ -85,7 +89,7 @@ namespace BooksWebCore.Controllers
     
 
     
-        
+        [NonAction]
         [HttpGet("new/{title}")]
         public async Task<IActionResult> AddDummyBook(string title)
         {
