@@ -63,7 +63,8 @@ namespace ConceptArchitect.BookManagement.FlatFileRepository
             if (store.books.ContainsKey(id))
                 return store.books[id];
             else
-                throw new EntityNotFoundException(Entity: typeof(Book), Id: id);//return null;
+                return null;
+                //throw new EntityNotFoundException(Entity: typeof(Book), Id: id);//return null;
         }
 
         public Book GetOne(Func<Book, bool> matcher)

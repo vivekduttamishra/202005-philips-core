@@ -1,0 +1,118 @@
+﻿
+<h1>Contact List</h1>
+
+<button id="refresh-button" onclick="app.refresh();" class="btn btn-sm btn-primary">Refresh</button>
+<buttonn onClick="app.autoRefresh();" class="btn btn-sm btn-secondary" >Auto Refresh</buttonn>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody id="people-list" data-people-list >
+        <tr>
+            <td>1</td>
+            <td>Vivek</td>
+            <td>vivek@conceptarchitect.in</td>
+            <td>
+                <button class="btn btn-sm btn-info">Edit</button>
+                <button class="btn-danger btn btn-sm">Delete</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>Sanjay</td>
+            <td>sanjay@gmail.com</td>
+            <td>
+                <button class="btn btn-sm btn-primary">Edit</button>
+                <button class="btn-danger btn btn-sm">Delete</button>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+
+
+
+
+@section scripts{ 
+
+    <script src="~/lib/aspnet/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+
+        var app=(function () {
+            const apiUrl = "/api/people";
+            const hubUrl = "/hubs/people";
+
+            var peopleList = $("[data-people-list]");
+
+            function getPersonRow(person) {
+
+                return  `
+                        <tr>
+                            <td>${person.id}</td>
+                            <td>${person.name}</td>
+                            <td>${person.email}</td>
+                            <td>
+                                <button data-edit-id="${person.Id}" class="btn btn-sm btn-info">Edit</button>
+                                <button data-delete-id="${person.Id}" class="btn-danger btn btn-sm">Delete</button>
+                            </td>
+                        </tr>
+                        `;
+            }
+
+            function refresh() {
+               
+                peopleList.empty();
+                $.getJSON(apiUrl, (people) => {
+                    
+                    for (var person of people) {
+                        
+                        var row = getPersonRow(person);
+                        peopleList.append(row);
+                    }
+
+                })
+            }
+
+            function autoRefresh() {
+                var connection = new signalR.HubConnectionBuilder()
+                    .withUrl(hubUrl).build();
+
+                connection
+                    .start()
+                    .then(() => $("#refresh-button").fadeOut(3000))
+                    .catch(err => alert("cant setup auto refresh"));
+
+                connection.on("PersonAdded", person => {
+                    console.log("got", person);
+                    var row = getPersonRow(person);
+                    peopleList.prepend(row);
+                    
+                });
+            }
+
+
+            //call auto start actions
+            refresh();
+
+
+            //return even collection
+            return {
+                refresh,
+                autoRefresh
+
+            };
+        })();
+
+    </script>
+}

@@ -21,7 +21,7 @@ namespace BooksWebCore.Controllers
         public IActionResult Index()
         {
             //return View();
-            return RedirectToAction("List", "Author");
+            return RedirectToAction("Manage", "Book");
         }
 
         public void Problem()

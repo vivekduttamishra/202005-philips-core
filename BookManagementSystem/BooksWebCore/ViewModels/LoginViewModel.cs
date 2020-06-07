@@ -9,6 +9,9 @@ namespace BooksWebCore.ViewModels
     public class LoginViewModel
     {
         [Required]
+        public string UserName;
+
+        //[Required]
         [EmailAddress]
         public string Email { get; set; }
         [Required]

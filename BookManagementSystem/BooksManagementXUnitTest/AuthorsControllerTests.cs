@@ -78,7 +78,8 @@ namespace BooksManagementXUnitTest
 
 
             //Act
-            var result = controller.AddAuthor(new Author());
+            Author author = new Author();
+            var result = controller.AddAuthor(author);
 
             //ASSERT
 
@@ -94,7 +95,7 @@ namespace BooksManagementXUnitTest
 
             //verify that because of validation error
             //manager.Add was never called with any parameter
-            mock.Verify(m => m.AddAuthor(It.IsAny<Author>()), Times.Never);
+            mock.Verify(m => m.AddAuthor(author), Times.Never);
         }
 
         [Fact]

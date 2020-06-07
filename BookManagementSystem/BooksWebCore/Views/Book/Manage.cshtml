@@ -1,0 +1,467 @@
+﻿
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<h1>Manage Books</h1>
+
+
+
+<fieldset>
+   
+    <input id="search" type="search" class="form-control-sm" placeholder="Search" />
+    <button onclick="app.getBooksByAuthor()" title="Search by author" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
+    <button onclick="app.getBookById();" title="Search by id" class="btn btn-primary btn-sm"><i class="fas fa-key"></i></button>
+    <button onclick="app.getAllBooks();" title="Get All" class="btn btn-primary btn-sm"><i class="fas fa-list-ul"></i></button>
+    <button onclick="app.toggleBookEditor();" title="Add New Book" class="btn btn-primary btn-sm"><i class="fas fa-book-medical"></i></button>
+    <span id="login-pane">
+        <span id="login-form">
+            <input type="text" placeholder="username" id="username" class="form-control-sm" />
+            <input  type="password" placeholder="password" id="password" class="form-control-sm" />
+        </span>
+        <button onclick="app.login();" class="btn btn-primary btn-sm"><i class="fas fa-sign-in-alt"></i></button>
+    </span>
+    
+    
+    <span id="loggedin-pane">
+        <span id="loggedInUserName">Vivek</span>
+        <button onclick="app.logout();" class="btn btn-primary btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+    </span>
+    
+</fieldset>
+
+<div class="row" id="main-div">
+    <div class="md-col-7" id="list-div">
+        <table id="book-table" class="table table-hover table-striped " >
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="book-list">
+                <tr>
+                    <td><a href="#">The Accursed God</a></td>
+                    <td><a href="#">Vivek Dutta</a></td>
+                    <td>
+                        <button onclick="app.addDummyBook()" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#">Rashmirathi</a></td>
+                    <td><a href="#">Ramdhari Singh Dinkar</a></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm"><i class="fas fa-feather-alt"></i></button>
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+        
+    </div>
+
+    <div class="md-col-5" id="details-div">
+        <img id="wait-animation" src="/images/wait8.gif" width="150" />
+        <fieldset id="book-editor" class="book-editor">
+            <legend>
+                New Book <i onclick="app.toggleBookEditor()" style="color:darkred;" class="fas fa-times-circle"></i>
+                <i onclick="app.clearEditor();" class="fas fa-eraser"></i>
+            </legend>
+            <label for="Name">Id</label><br />
+            <input type="text" id="id" class="form-control" />
+            <label for="Name">Title</label><br />
+            <input type="text" id="title" class="form-control" />
+            <label for="Author">Author</label><br />
+            <select id="author" class="form-control">
+               
+            </select>
+            <label for="Price">Price</label><br />
+            <input type="text" id="price" class="form-control" />
+            <label for="description">Description</label><br />
+            <input type="text" id="description" class="form-control" />
+            <label for="description">Tags</label><br />
+            <input type="text" id="tags" class="form-control" />
+            <label for="Phogtograph">Cover</label><br />
+            <input type="text" id="cover" class="form-control" />
+            <button onclick="app.saveBook()" class="btn form-control btn-outline-dark"><i class="fas fa-feather-alt"></i>Save</button>
+            <button onclick="app.clearEditor()" class="btn form-control btn-outline-dark"><i class="fas fa-eraser"></i>Clear</button>
+
+        </fieldset>
+
+
+    </div>
+
+</div>
+
+
+@section scripts{ 
+
+
+<script src="~/lib/signalr.min.js"></script>
+<script>
+
+
+    
+
+    let app = (function () {
+
+        let animation = $("#wait-animation");
+        var bookList = $("#book-list");
+        let bookEditor = $("#book-editor");
+
+        function toggleLogin() {
+            $("#login-form").slideToggle(1000);
+        }
+        function toggleBookEditor() {
+            $("#book-editor").slideToggle(2000);
+        }
+
+        function showBookInEditor(book) {
+            $("#id").val(book.id);
+            $("#title").val(book.title);
+            $("#author").val(book.author);
+            $("#price").val(book.price);
+            $("#description").val(book.description);
+            $("#tags").val(book.tags);
+            $("#cover").val(book.cover);  
+
+            bookEditor.show();
+        }
+
+        function getBookFromEditor() {
+            return {
+                id:$("#id").val(),
+                title: $("#title").val(),
+                author: $("#author").val(),
+                price: $("#price").val(),
+                description: $("#description").val(),
+                tags: $("#tags").val(),
+                cover: $("#author").val()
+            };
+        }
+
+        
+        function saveBook() {
+            var author = getBookFromEditor();
+            console.log("saving", author);
+        }
+
+        function addDummyBook() {
+            showBookInEditor({
+                id:"the-accursed-god",
+                title: "The Accursed God",
+                author: "Vivek Dutta Mishra",
+                price: 399,
+                description: "The Lost Epic Series Book#1, The Epic tale of Mahabharat with lost",
+                cover: "the-accursed-god.jpg",
+                tags:"epic, fiction, series"
+            });
+        }
+
+        function clearEditor() {
+            showBookInEditor({
+                title: "",
+                author: "",
+                price: 0,
+                description: "",
+                cover: "",
+                tags: ""
+            });
+        }
+
+        function createBookRow(book) {
+            return `
+                <tr>
+                    <td><a href="#">${book.title}</a></td>
+                    <td><a href="#">${book.author.name}</a></td >
+                    <td>
+                        <button class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function createBookList(books) {
+            
+            bookList.empty(); //remove any old record
+            
+
+            //foreach loop
+            for (var book of books) {
+                var row = createBookRow(book);
+                //console.log(book);
+                //console.log(row);
+                bookList.append(row);
+            }
+
+            animation.hide();
+            bookList.show();
+           
+        }
+        function populateAuthorCombo(authors) {
+            let combo = $("#author");
+            combo.empty();
+            console.log('authors', authors);
+            for (var author of authors) {
+                combo.append(`
+                    <option>${author.name}</option>                
+                `);
+            }
+        }
+
+        //--- my server requests
+        const baseUrl = "/api/books";
+
+
+
+        function getAllAuthors() {
+            var url = "/api/authors";
+            $.getJSON(url, populateAuthorCombo);
+        }
+
+        function getAllBooks() {
+            //make an Get request for a Json response 
+            //this call adds accept:application/json in the header
+            animation.show();
+            bookList.hide();
+            
+            $.getJSON(baseUrl, createBookList);
+        }
+
+        var searchBox = $("#search");
+
+        function getSearchTerm() {
+            
+            var searchTerm = searchBox.val();
+            return searchTerm; 
+        }
+
+        function getBookById() {
+            var term = getSearchTerm();
+            if (!term)
+                return;
+
+            //let contact server
+            let url = `${baseUrl}/${term}`;
+            animation.show();
+            bookEditor.hide();
+            $.getJSON(url, (book) => {
+                
+                showBookInEditor(book);
+                animation.hide();
+            }).fail(error => {
+                //console.log(error);
+                animation.hide();
+                clearEditor();
+                bookEditor.hide();
+                console.log(error);
+                console.log(error.status);
+                if (error.status === 404)
+                    alert("No book with id " + term);
+                else
+                    alert("Unknown Error " + error.status);
+
+            });
+        }
+
+
+        function getBooksByAuthor() {
+            var term = getSearchTerm();
+            if (!term)
+                return;
+
+            clearEditor();
+            bookEditor.hide();
+
+            var url = `${baseUrl}/by/${term}`;
+
+            bookList.empty();
+            bookList.hide();
+            animation.show();
+            
+            $.ajax({
+                type: "GET",
+                url: url,
+                headers: {
+                    Authorization: token,
+                    Accept: "application/json"
+                },
+                statusCode: {
+                    "200": function (books) { createBookList(books); },
+                    "401": function (error) {
+                        if (error.status === 401) {
+                            alert("You need to login to get this information");
+                            $("#login-form").show();
+                            $("#username").focus();
+                        } else {
+                            alert("unknown error " + error.status);
+                        }
+                    }
+                }
+            });
+
+            //$.getJSON(url, createBookList)
+            //    .fail(error => {
+            //        if (error.status === 401) {
+            //            alert("You need to login to get this information");
+            //            $("#login-form").show();
+            //            $("#username").focus();
+            //        } else {
+            //            alert("unknown error " + error.status);
+            //        }
+
+            //    });
+        }
+
+        //--- end of server requests
+
+
+        //--- login
+        var token = null;
+        var loginFormHidden = true;
+        function login() {
+
+            if (loginFormHidden) {
+                $("#login-form").show();
+                $("#username").focus();
+                loginFormHidden = false;
+                return;
+            }
+
+            var username = $("#username").val();
+            var password = $("#password").val();
+
+            if (!username || !password)
+                return alert("Missing Login Details");
+
+            var userInfo = {
+                username: username,
+                password: password
+            };
+
+            var url = '/account/token';
+
+            var onSuccess = function (responseToken) {
+                token ="BEARER "+ responseToken;
+                console.log("token", token);
+                $("#login-pane").slideToggle(2000);
+                $("#loggedinUserName").html(username);
+                $("#loggedin-pane").slideToggle();
+                animation.hide();
+            };
+
+            var onFailure = function (error) {
+                console.log('error', error.status);
+                console.log('error', error);
+                if (error.status === 400) {
+                    alert("Invalid Credentials. Retry");
+                    $("#username").focus();
+                    animation.hide();
+                } else if (error.status == 200) {
+                    onSuccess(error.responseText);
+                }
+            };
+
+           
+
+            
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(userInfo),
+                headers: {                    
+                    "content-type":"application/json"
+                },
+                dataType: "application/json",
+                success: onSuccess,
+                fail: onFailure,
+                error: onFailure
+
+
+            })
+        }
+
+        function logout() {
+            token = null;
+            $("#loggedin-pane").hide();
+            $("#login-pane").show();
+            $("#login-form").hide();
+        }
+
+        //---
+
+        return {
+            toggleLogin,
+            toggleBookEditor,
+            saveBook,
+            addDummyBook,
+            clearEditor,
+            getAllBooks,
+            getBookById,
+            getAllAuthors,
+            getBooksByAuthor,
+            login,
+            logout
+
+        };
+
+
+    })();
+
+
+    //run this piece of code as soon as page is loaded
+    //speical jquery method
+    $(() => {
+        $("#login-form").hide();  //search for anything with id (#) login-form and hide it
+        $("#book-editor").hide(); //don't show post login information
+        $("#loggedin-pane").hide(); //don't show add book option
+        $("#book-list").hide();
+        $("#wait-animation").hide();
+        //load the data as soon as page is ready
+        app.getAllAuthors(); 
+        app.getAllBooks(); 
+        
+    });
+
+
+    //Configure your signalR communication
+    $(() => {
+        var url = "/hubs/book";
+        var connection = new signalR.
+            HubConnectionBuilder()
+            .withUrl(url).build();
+        console.log('connecting to ', url);
+        connection
+            .start()
+            .then(() => console.log("connected to the server..."))
+            .catch(err => console.log(err));
+
+        connection.on("BookAdded", book => {
+            console.log("new book added ", book);
+            var row = `
+                <tr>
+                    <td><a href="#">${book.title}</a></td>
+                    <td><a href="#">${book.author.name}</a></td >
+                    <td>
+                        <button class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+
+            $("#book-list").prepend(row);
+        });
+
+
+    });
+
+
+</script>
+
+}

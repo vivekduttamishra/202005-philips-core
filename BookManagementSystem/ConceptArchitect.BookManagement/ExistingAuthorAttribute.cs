@@ -9,8 +9,11 @@ namespace ConceptArchitect.BookManagement
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value == null)
-                return new ValidationResult("Author Name is Required");
+
+            if (true)
+                return ValidationResult.Success;
+            //if (value == null)
+             //   return new ValidationResult("Author Name is Required");
 
             var authorId = value.ToString().ToLower().Replace(' ', '-');
 

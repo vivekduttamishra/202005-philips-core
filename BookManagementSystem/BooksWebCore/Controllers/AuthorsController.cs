@@ -60,7 +60,7 @@ namespace BooksWebCore.Controllers
 
 
         [Route("{id}/biography")]
-        [Authorize]
+        
         public IActionResult GetAuthorsBiography(string id)
         {
             var author = authorManager.GetAuthorById(id);
@@ -72,6 +72,7 @@ namespace BooksWebCore.Controllers
         }
 
         [Route("{id}/books")]
+        [Authorize]  //<--- Actually this is just authenticating
         public IActionResult GetBooksByAuthors(string id)
         {
             var author = authorManager.GetAuthorById(id);
@@ -83,6 +84,7 @@ namespace BooksWebCore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")] //<--- Authorization for only Admins
         public IActionResult AddAuthor([FromBody]Author author)
         {
             if(ModelState.IsValid)

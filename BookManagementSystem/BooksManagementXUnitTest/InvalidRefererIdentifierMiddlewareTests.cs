@@ -56,6 +56,7 @@ namespace BooksManagementXUnitTest
 
             Stream mem = new MemoryStream();
             //TODO: Fix the Memory Stram to httpContext
+            httpContext.Response.Body = mem; //when some one writes to body, write to memeory stream
 
 
             //provide a delegate which immediately finishes
@@ -74,17 +75,19 @@ namespace BooksManagementXUnitTest
             
             await middleware.Invoke(httpContext);
 
-            var invalidRefererHeader = httpContext.Request.Headers["invalid_referer"].FirstOrDefault();
-            Assert.Equal(false.ToString(), invalidRefererHeader);
+            //var invalidRefererHeader = httpContext.Request.Headers["invalid_referer"].FirstOrDefault();
+            //Assert.Equal(false.ToString(), invalidRefererHeader);
 
 
-            //TODO: assert against sthat memory
+            //Step1: we need to read the memory  stream from the begining So let us rewind it beging
             mem.Seek(0, SeekOrigin.Begin);
-            byte[] buffer = new byte[1024];
-            var data = mem.Read(buffer);
-            String str = data.ToString();
 
-            Assert.Equal("invalid_refer : False", str);
+            var reader = new StreamReader(mem);
+
+            var text = reader.ReadToEnd();
+           
+
+            Assert.Equal("invalid_refer : False", text);
 
         }
     }

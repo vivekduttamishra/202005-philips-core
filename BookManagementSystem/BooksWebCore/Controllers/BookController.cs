@@ -28,6 +28,11 @@ namespace BooksWebCore.Controllers
             return View(book);
         }
 
+        public IActionResult Manage()
+        {
+            return View(new object()); //dummy object to avoid 404
+        }
+
 
     }
 }
